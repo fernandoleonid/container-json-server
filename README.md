@@ -1,4 +1,4 @@
-# JSON Server em container
+# JSON Server com docker compose
 
 Este projeto inicia uma API REST falsa com [JSON Server](https://github.com), usando o Docker Compose e os dados de `./data/db.json`.
 
