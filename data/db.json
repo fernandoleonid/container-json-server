@@ -18,12 +18,5 @@
       "endereco": "Rua dos padres, 555",
       "cidade": "Osasco"
     }
-  ],
-  "funcionarios": [
-    {
-      "id":1,
-      "nome": "Fernando",
-      "email": "feranandoleonid@gmail.com"
-    }
   ]
 }

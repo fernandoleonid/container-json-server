@@ -1,4 +1,4 @@
-version: '3.8'
+# version: '3.8'
 
 services:
   json-server:
@@ -7,7 +7,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./db.json:/data/db.json
+      - ./data:/data
     command:
       - /data/db.json
       - --host
@@ -15,3 +15,7 @@ services:
       - --port
       - "3000"
     restart: unless-stopped
+    develop:
+      watch:
+        - action: restart
+          path: ./data/db.json
