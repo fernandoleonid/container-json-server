@@ -1,6 +1,6 @@
 # JSON Server em container
 
-Este projeto inicia uma API REST falsa com [JSON Server](https://github.com/typicode/json-server), usando o Docker Compose e os dados de `db.json`.
+Este projeto inicia uma API REST falsa com [JSON Server](https://github.com), usando o Docker Compose e os dados de `./data/db.json`.
 
 ## Pré-requisitos
 
@@ -9,13 +9,21 @@ Este projeto inicia uma API REST falsa com [JSON Server](https://github.com/typi
 
 ## Iniciar
 
-Na pasta do projeto, execute:
+Na pasta do projeto, execute para iniciar em segundo plano:
 
 ```sh
 docker compose up -d
 ```
 
-O serviço ficará disponível em `http://localhost:3000`. Para conferir se está em execução:
+Ou, se quiser que o container reinicie automaticamente sempre que você editar o `db.json` (modo desenvolvimento):
+
+```sh
+docker compose up --watch
+```
+
+> **Nota:** Mesmo usando `--watch`, o servidor apenas reinicia no terminal. **O navegador não atualiza a página automaticamente** — você precisa recarregar a aba (`F5`) ou fazer uma nova requisição para ver os dados atualizados.
+
+O serviço ficará disponível em `http://localhost:3000`. Para conferir se está em execução (quando iniciado com `-d`):
 
 ```sh
 docker compose ps
@@ -24,15 +32,18 @@ docker compose logs -f json-server
 
 ## Endpoints disponíveis
 
-Cada propriedade de nível superior do `db.json` cria um endpoint. Com os dados atuais, estão disponíveis:
+Cada propriedade de nível superior do `db.json` cria um endpoint. Sem precisar programar regras no backend, a API já responde a consultas simples e avançadas direto pela URL:
 
-- `http://localhost:3000/contatos`
-- `http://localhost:3000/funcionarios`
-
-Também é possível acessar um registro pelo ID, por exemplo:
-
-- `http://localhost:3000/contatos/1`
-- `http://localhost:3000/funcionarios/1`
+- **Listar todos os registros do recurso:**
+  - `http://localhost:3000/contatos`
+  - `http://localhost:3000/funcionarios`
+- **Buscar um registro específico pelo ID:**
+  - `http://localhost:3000/contatos/1`
+  - `http://localhost:3000/funcionarios/1`
+- **Busca por termo (Query String):**
+  - `http://localhost:3000/funcionarios?nome_like=silva`
+- **Paginação (página e limite de itens):**
+  - `http://localhost:3000/contatos?_page=1&_limit=5`
 
 ### Métodos HTTP disponíveis
 
@@ -43,11 +54,11 @@ Os endpoints aceitam os seguintes métodos:
 - `PUT`: substitui um registro existente pelo ID.
 - `DELETE`: remove um registro pelo ID.
 
-As alterações feitas pela API são gravadas no `db.json`, compartilhado entre o host e o container.
+As alterações feitas pela API são gravadas no `./data/db.json`, compartilhado entre o host e o container.
 
 ## Dados e configuração
 
-Para alterar os dados existentes, edite os registros correspondentes em `db.json`. Para adicionar um endpoint, inclua uma nova propriedade no objeto JSON de nível superior e coloque os registros em uma lista. Por exemplo, acrescente esta propriedade ao objeto existente para criar `/produtos`:
+Para alterar os dados existentes, edite os registros correspondentes em `./data/db.json`. Para adicionar um endpoint, inclua uma nova propriedade no objeto JSON de nível superior e coloque os registros em uma lista. Por exemplo, acrescente esta propriedade ao objeto existente para criar `/produtos`:
 
 ```json
 {
@@ -86,7 +97,7 @@ Para adicionar outro endpoint, como `/pedidos`, acrescente uma nova propriedade 
 
 Assim, os endpoints `/produtos` e `/pedidos` ficam disponíveis, além dos endpoints que já estavam no arquivo. Mantenha o `db.json` como JSON válido.
 
-O `docker-compose.yml` mapeia a porta `3000` do host para a porta `3000` do container e monta `./db.json` em `/data/db.json`. Alterações feitas pela API são gravadas no arquivo local. Após editar o arquivo manualmente, reinicie o serviço para carregar os dados:
+O `docker-compose.yml` mapeia a porta `3000` do host para a porta `3000` do container e monta `./data` em `/data`. Caso tenha iniciado o container sem `--watch`, reinicie o serviço manualmente após editar o arquivo:
 
 ```sh
 docker compose restart json-server
@@ -100,4 +111,4 @@ Para parar e remover o container e a rede do Compose:
 docker compose down
 ```
 
-O arquivo `db.json` permanece no projeto.
+O arquivo `./data/db.json` permanece no projeto.
