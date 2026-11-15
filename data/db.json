@@ -14,9 +14,21 @@
       "nome": "Igor da Silva",
       "celular": "11 9 1112-3333",
       "foto": "https://img.freepik.com/psd-gratuitas/ilustracao-3d-de-avatar-ou-perfil-humano_23-2150671122.jpg",
-      "email": "fernando@gmail.com",
+      "email": "igor@gmail.com",
       "endereco": "Rua dos padres, 555",
       "cidade": "Osasco"
+    }
+  ],
+  "funcionarios": [
+    {
+      "id": 1,
+      "nome": "Luiz Fernando",
+      "cargo": "Desenvolvedor"
+    },
+    {
+      "id": 2,
+      "nome": "Maria Clara",
+      "cargo": "Designer"
     }
   ]
 }
